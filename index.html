@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>the one and only</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#fef6fb;--ink:#2a1220;--muted:#b07090;
+  --rose:#e8356d;--blush:#f4a0bf;--petal:#ffeaf3;--deep:#c4185a;
+}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:'DM Sans',sans-serif;font-weight:300;
+  overflow-x:hidden;-webkit-tap-highlight-color:transparent;
+}
+
+/* ═══════════════════════════════════
+   CUTE DREAMY BACKGROUND
+═══════════════════════════════════ */
+#wave-bg{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  overflow:hidden;
+}
+/* Soft pastel gradient base */
+#wave-bg::before{
+  content:'';
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 90% 70% at 15% 5%, rgba(255,210,235,0.65) 0%, transparent 60%),
+    radial-gradient(ellipse 75% 60% at 85% 20%, rgba(255,190,225,0.5) 0%, transparent 60%),
+    radial-gradient(ellipse 100% 80% at 50% 55%, rgba(255,230,245,0.4) 0%, transparent 70%),
+    radial-gradient(ellipse 65% 55% at 10% 85%, rgba(255,205,228,0.35) 0%, transparent 55%),
+    radial-gradient(ellipse 80% 70% at 90% 90%, rgba(248,170,210,0.3) 0%, transparent 60%),
+    linear-gradient(155deg, #fff5fb 0%, #fef2f8 30%, #fffafd 60%, #fdeef7 100%);
+  animation:bgPulse 10s ease-in-out infinite alternate;
+}
+@keyframes bgPulse{
+  0%{opacity:1;transform:scale(1);}
+  100%{opacity:.9;transform:scale(1.01);}
+}
+
+/* Soft blurred orbs */
+.orb{
+  position:fixed;border-radius:50%;pointer-events:none;
+  filter:blur(70px);animation:orbDrift ease-in-out infinite alternate;
+}
+.orb1{width:380px;height:380px;top:-40px;left:-80px;background:rgba(255,200,230,.32);animation-duration:13s;}
+.orb2{width:300px;height:300px;top:28%;right:-80px;background:rgba(232,53,109,.09);animation-duration:17s;animation-delay:-4s;}
+.orb3{width:350px;height:350px;top:60%;left:3%;background:rgba(255,215,238,.26);animation-duration:10s;animation-delay:-2s;}
+.orb4{width:280px;height:280px;bottom:-60px;right:0%;background:rgba(244,160,191,.2);animation-duration:15s;animation-delay:-7s;}
+@keyframes orbDrift{
+  0%{transform:translate(0,0) scale(1);}
+  100%{transform:translate(18px,28px) scale(1.06);}
+}
+
+/* ── Sparkle stars scattered across bg ── */
+.sparkle{
+  position:fixed;pointer-events:none;z-index:1;
+  animation:sparkleTwinkle ease-in-out infinite alternate;
+  font-size:.55rem;opacity:.45;
+}
+@keyframes sparkleTwinkle{
+  0%{opacity:.1;transform:scale(.7) rotate(0deg);}
+  50%{opacity:.55;transform:scale(1.2) rotate(20deg);}
+  100%{opacity:.2;transform:scale(.85) rotate(-10deg);}
+}
+
+/* Very faint grain overlay */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:8000;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.018'/%3E%3C/svg%3E");
+}
+
+/* ═══ GATE ═══ */
+#gate{
+  position:fixed;inset:0;z-index:7000;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;
+  background:
+    radial-gradient(ellipse 80% 65% at 50% 40%, rgba(255,210,238,.7) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 50% at 30% 70%, rgba(255,185,225,.35) 0%, transparent 55%),
+    linear-gradient(170deg,#fff5fb 0%,#fdf2f9 50%,#fff0f8 100%);
+  transition:opacity .8s ease,transform .8s cubic-bezier(.4,0,.2,1);
+}
+#gate.exploded{opacity:0;transform:scale(1.18);pointer-events:none;}
+.gate-label{font-size:.65rem;letter-spacing:6px;text-transform:uppercase;color:var(--muted);animation:fadeUp .8s ease forwards .2s;opacity:0;}
+#tapbox{position:relative;width:130px;height:130px;cursor:pointer;-webkit-user-select:none;user-select:none;filter:drop-shadow(0 8px 22px rgba(232,53,109,.28));}
+/* soft shimmer ring behind the gift box */
+#tapbox::before{
+  content:'';position:absolute;inset:-16px;border-radius:50%;
+  background:radial-gradient(circle, rgba(255,180,220,.25) 0%, transparent 70%);
+  animation:ringPulse 2s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes ringPulse{
+  0%,100%{transform:scale(1);opacity:.6;}
+  50%{transform:scale(1.15);opacity:1;}
+}
+#tapbox:active{transform:scale(.93);}
+#tapbox.shake{animation:boxShake .4s ease;}
+@keyframes boxShake{0%,100%{transform:rotate(0) scale(1);}20%{transform:rotate(-7deg) scale(1.06);}40%{transform:rotate(7deg) scale(1.09);}60%{transform:rotate(-4deg) scale(1.07);}80%{transform:rotate(4deg) scale(1.04);}}
+.box-lid{transform-origin:bottom center;transition:transform .25s ease;}
+#tapbox.shake .box-lid{animation:lidWobble .4s ease;}
+@keyframes lidWobble{0%,100%{transform:rotate(0) translateY(0);}30%{transform:rotate(-8deg) translateY(-6px);}60%{transform:rotate(6deg) translateY(-10px);}}
+#tapbox.boom{animation:boxBoom .5s cubic-bezier(.4,0,.2,1) forwards;}
+@keyframes boxBoom{0%{transform:scale(1);}40%{transform:scale(1.35) rotate(-6deg);}70%{transform:scale(.8) rotate(4deg);}100%{transform:scale(0) rotate(15deg);opacity:0;}}
+.tap-dots{display:flex;gap:10px;}
+.tdot{width:9px;height:9px;border-radius:50%;background:rgba(232,53,109,.12);border:1.5px solid var(--blush);transition:background .3s,transform .3s cubic-bezier(.34,1.6,.64,1),box-shadow .3s;}
+.tdot.lit{background:var(--rose);transform:scale(1.4);box-shadow:0 0 10px rgba(232,53,109,.5);}
+.tap-hint{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;color:var(--deep);animation:pulse 1.8s ease-in-out infinite;text-align:center;}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:7500;}
+
+/* ═══ MAIN ═══ */
+#main{opacity:0;transition:opacity .9s ease .3s;pointer-events:none;position:relative;z-index:2;}
+#main.show{opacity:1;pointer-events:auto;}
+
+/* floating petals — fewer, softer */
+.fp{position:fixed;pointer-events:none;z-index:1;animation:fpFloat linear infinite;}
+@keyframes fpFloat{0%{transform:translateY(-40px) rotate(0deg);opacity:0;}8%{opacity:.3;}92%{opacity:.18;}100%{transform:translateY(108vh) rotate(540deg);opacity:0;}}
+
+/* ── SECTIONS ── */
+.section{
+  position:relative;
+  padding:80px 28px 70px;
+  display:flex;flex-direction:column;align-items:center;
+  overflow:visible;
+  z-index:2;
+}
+.section:first-child{padding-top:110px;}
+
+/* ── TYPOGRAPHY ── */
+.deco-stars{color:var(--rose);font-size:.75rem;letter-spacing:12px;opacity:.7;}
+.big-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(3rem,13vw,5.2rem);font-weight:300;font-style:italic;
+  line-height:1.05;text-align:center;color:var(--ink);letter-spacing:-1px;
+}
+.big-title span{color:var(--rose);}
+.sub-line{font-size:.67rem;letter-spacing:5px;text-transform:uppercase;color:var(--muted);}
+.heading2{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2rem,8.5vw,3.1rem);font-weight:300;font-style:italic;
+  line-height:1.25;text-align:center;max-width:320px;color:var(--ink);margin-bottom:24px;
+}
+.heading2 em{color:var(--rose);}
+.label{font-size:.63rem;letter-spacing:5px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;text-align:center;}
+.quote{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(1.5rem,7vw,2.1rem);font-weight:300;line-height:1.3;
+  text-align:center;color:var(--deep);max-width:300px;margin-bottom:22px;
+}
+.quote span{color:var(--rose);}
+
+/* ── MESSAGE CARD ── */
+.msg-card{
+  width:100%;max-width:310px;
+  background:rgba(255,255,255,.78);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(244,160,191,.35);border-radius:20px;padding:26px 22px;
+  box-shadow:0 4px 24px rgba(232,53,109,.07),0 1px 4px rgba(232,53,109,.04);
+  position:relative;overflow:hidden;text-align:center;
+}
+.msg-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,transparent,rgba(232,53,109,.5),transparent);}
+.msg-card p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;font-weight:300;color:var(--ink);line-height:1.75;}
+.msg-card p em{color:var(--rose);}
+
+/* ══════════════════════════════════
+   POLAROID PHOTO FRAME
+══════════════════════════════════ */
+.frame{
+  background:white;
+  padding:8px 8px 30px 8px;
+  box-shadow:0 6px 24px rgba(42,18,32,.1),0 1px 4px rgba(232,53,109,.06);
+  position:relative;flex-shrink:0;cursor:pointer;
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s ease;
+}
+.frame:hover{transform:scale(1.04) rotate(0deg) !important;box-shadow:0 12px 36px rgba(42,18,32,.15),0 3px 10px rgba(232,53,109,.12);}
+.frame .inner{
+  overflow:hidden;
+  background:var(--petal);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:5px;
+}
+.frame .inner img{width:100%;height:100%;object-fit:cover;display:block;}
+.frame .inner.empty{border:1.5px dashed rgba(244,160,191,.5);}
+.frame .inner.empty .ph-icon{font-size:1.2rem;opacity:.4;}
+.frame .inner.empty .ph-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.65rem;color:var(--muted);text-align:center;padding:0 5px;line-height:1.4;}
+.frame .caption{position:absolute;bottom:7px;left:0;right:0;text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.66rem;color:var(--muted);}
+
+/* standard row of frames */
+.frames-row{
+  display:flex;justify-content:center;align-items:flex-end;
+  gap:0;margin:22px 0 8px;width:100%;max-width:340px;
+}
+.frame.sm{width:108px;}.frame.sm .inner{height:108px;}
+.frame.md{width:128px;}.frame.md .inner{height:138px;}
+.frame.lg{width:150px;}.frame.lg .inner{height:165px;}
+.frame.wide{width:236px;}.frame.wide .inner{height:156px;}
+
+.frame.tl{transform:rotate(-4deg) translateY(8px);}
+.frame.tr{transform:rotate(4deg) translateY(6px);}
+.frame.tll{transform:rotate(-6deg) translateY(10px);}
+.frame.trr{transform:rotate(6deg) translateY(10px);}
+.frame.t0{transform:rotate(-1.5deg);}
+
+/* ══════════════════════════════════
+   HEART MOSAIC (section 3)
+══════════════════════════════════ */
+#heart-mosaic{
+  display:grid;
+  grid-template-columns:repeat(5, 64px);
+  grid-template-rows:repeat(5, 64px);
+  gap:5px;
+  margin:10px 0 20px;
+}
+.hcell{
+  width:64px;height:64px;
+  background:white;
+  padding:4px;
+  box-shadow:0 3px 12px rgba(42,18,32,.1),0 1px 3px rgba(232,53,109,.07);
+  cursor:pointer;
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s;
+  overflow:hidden;
+}
+.hcell:hover{transform:scale(1.08);box-shadow:0 8px 22px rgba(42,18,32,.16);}
+.hcell .inner{
+  width:100%;height:100%;
+  background:var(--petal);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.9rem;overflow:hidden;
+}
+.hcell .inner.empty{border:1.5px dashed rgba(244,160,191,.6);}
+.hcell .inner img{width:100%;height:100%;object-fit:cover;display:block;}
+.hcell.spacer{background:transparent;box-shadow:none;pointer-events:none;padding:0;}
+
+/* stagger reveal */
+.hcell:nth-child(1){transition-delay:.05s}
+.hcell:nth-child(2){transition-delay:.1s}
+.hcell:nth-child(3){transition-delay:.15s}
+.hcell:nth-child(4){transition-delay:.2s}
+.hcell:nth-child(5){transition-delay:.25s}
+.hcell:nth-child(6){transition-delay:.3s}
+.hcell:nth-child(7){transition-delay:.35s}
+.hcell:nth-child(8){transition-delay:.4s}
+.hcell:nth-child(9){transition-delay:.45s}
+.hcell:nth-child(10){transition-delay:.5s}
+.hcell:nth-child(11){transition-delay:.55s}
+.hcell:nth-child(12){transition-delay:.6s}
+.hcell:nth-child(13){transition-delay:.65s}
+
+/* ── HEART MOSAIC LONG TEXT ── */
+.mosaic-text{
+  width:100%;max-width:320px;
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
+  font-size:1.02rem;color:var(--ink);line-height:1.85;
+  text-align:center;margin-top:6px;
+}
+.mosaic-text em{color:var(--rose);}
+.mosaic-text + .mosaic-text{margin-top:16px;}
+
+/* ── BUBBLES ── */
+.bubble-row{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:18px;max-width:320px;}
+.bubble{
+  padding:7px 16px;border-radius:99px;
+  background:rgba(255,255,255,.75);backdrop-filter:blur(8px);
+  border:1px solid rgba(244,160,191,.4);
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.88rem;
+  color:var(--deep);box-shadow:0 2px 8px rgba(232,53,109,.06);
+  opacity:0;transform:translateY(10px) scale(.95);
+  transition:opacity .55s ease,transform .55s cubic-bezier(.34,1.56,.64,1);
+}
+.bubble.on{opacity:1;transform:translateY(0) scale(1);}
+
+/* ── HEART DECO ── */
+.heart-deco{font-size:3.2rem;animation:heartbeat 1.4s ease-in-out infinite;display:block;margin-bottom:8px;}
+@keyframes heartbeat{0%,100%{transform:scale(1)}14%{transform:scale(1.22)}28%{transform:scale(1)}42%{transform:scale(1.12)}56%{transform:scale(1)}}
+
+/* ── DIVIDER LINE ── */
+.divider{width:40px;height:1px;background:linear-gradient(90deg,transparent,rgba(232,53,109,.35),transparent);margin:20px auto;}
+
+/* ── FINAL ── */
+.final-note{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.9rem;color:var(--muted);text-align:center;max-width:260px;line-height:1.8;margin-top:8px;}
+.final-sig{font-size:.7rem;letter-spacing:4px;text-transform:uppercase;color:var(--blush);margin-top:12px;}
+
+/* scroll cue */
+.scroll-cue{display:flex;flex-direction:column;align-items:center;gap:5px;margin-top:30px;animation:fadeIn 1s ease forwards 2s;opacity:0;}
+.scroll-cue span{font-size:.6rem;letter-spacing:4px;text-transform:uppercase;color:var(--blush);}
+.scroll-line{width:1px;height:28px;background:linear-gradient(to bottom,var(--blush),transparent);animation:lineGrow 1.5s ease-in-out infinite;}
+
+/* section wave connector — very subtle */
+.wave-conn{
+  position:relative;height:50px;overflow:hidden;margin:-1px 0;z-index:2;pointer-events:none;
+}
+.wave-conn svg{position:absolute;width:100%;height:100%;}
+
+/* floating hearts ambient per section — fewer */
+.fheart{position:absolute;pointer-events:none;z-index:0;animation:fhFloat linear infinite;}
+@keyframes fhFloat{0%{opacity:0;transform:translateY(0) scale(.8);}10%{opacity:.18;}90%{opacity:.08;}100%{opacity:0;transform:translateY(-70px) scale(1.05);}}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .9s ease,transform .9s ease;}
+.reveal.on{opacity:1;transform:translateY(0);}
+.reveal.d1{transition-delay:.12s}.reveal.d2{transition-delay:.25s}.reveal.d3{transition-delay:.38s}.reveal.d4{transition-delay:.52s}
+
+/* heart mosaic reveal */
+#heart-mosaic.reveal .hcell:not(.spacer){opacity:0;transform:scale(.8);}
+#heart-mosaic.on .hcell:not(.spacer){opacity:1;transform:scale(1);transition:opacity .5s ease,transform .5s cubic-bezier(.34,1.56,.64,1);}
+
+/* keyframes */
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes lineGrow{0%{transform:scaleY(0);transform-origin:top;opacity:0}50%{transform:scaleY(1);transform-origin:top;opacity:1}100%{transform:scaleY(1);transform-origin:bottom;opacity:0}}
+</style>
+</head>
+<body>
+
+<!-- ══ BG ══ -->
+<div id="wave-bg">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+  <div class="orb orb4"></div>
+</div>
+
+<canvas id="fx"></canvas>
+
+<!-- ══ GATE ══ -->
+<div id="gate">
+  <p class="gate-label">✦ something just for you ✦</p>
+  <div id="tapbox" onclick="tapBox(event)">
+    <svg viewBox="0 0 140 140" width="140" height="140" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="70" cy="132" rx="46" ry="7" fill="rgba(232,53,109,.12)"/>
+      <rect x="18" y="72" width="104" height="62" rx="7" fill="url(#bodyG)"/>
+      <rect x="61" y="72" width="18" height="62" rx="4" fill="url(#ribG)" opacity=".85"/>
+      <g class="box-lid">
+        <rect x="12" y="58" width="116" height="22" rx="6" fill="url(#lidG)"/>
+        <rect x="12" y="64" width="116" height="10" rx="4" fill="url(#ribG)" opacity=".85"/>
+        <ellipse cx="54" cy="52" rx="20" ry="11" fill="url(#bowG)" transform="rotate(-25 54 52)"/>
+        <ellipse cx="86" cy="52" rx="20" ry="11" fill="url(#bowG)" transform="rotate(25 86 52)"/>
+        <ellipse cx="70" cy="55" rx="10" ry="8" fill="url(#bowCG)"/>
+        <ellipse cx="67" cy="53" rx="3" ry="2" fill="rgba(255,255,255,.45)" transform="rotate(-15 67 53)"/>
+      </g>
+      <defs>
+        <linearGradient id="bodyG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ffadd0"/><stop offset="100%" stop-color="#f97db5"/></linearGradient>
+        <linearGradient id="lidG"  x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f97db5"/><stop offset="100%" stop-color="#e8356d"/></linearGradient>
+        <linearGradient id="ribG"  x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#e8356d"/><stop offset="100%" stop-color="#c4185a"/></linearGradient>
+        <linearGradient id="bowG"  x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f97db5"/><stop offset="100%" stop-color="#e8356d"/></linearGradient>
+        <radialGradient id="bowCG" cx="40%" cy="35%"><stop offset="0%" stop-color="#ffadd0"/><stop offset="100%" stop-color="#e8356d"/></radialGradient>
+      </defs>
+    </svg>
+  </div>
+  <div class="tap-dots">
+    <div class="tdot" id="td1"></div>
+    <div class="tdot" id="td2"></div>
+    <div class="tdot" id="td3"></div>
+  </div>
+  <p class="tap-hint" id="tapHint">tap the box ✦</p>
+</div>
+
+<!-- ══ MAIN ══ -->
+<div id="main">
+
+  <!-- ────────────────────────────────
+       S1 · Hello my love
+  ──────────────────────────────────── -->
+  <div class="section" id="s1">
+    <p class="deco-stars reveal" style="animation:fadeUp 1s ease forwards .1s;opacity:0;">✦ ✦ ✦</p>
+    <span class="heart-deco" style="opacity:0;animation:fadeUp 1s ease forwards .3s,heartbeat 1.4s ease-in-out infinite 1.3s;">💗</span>
+    <h1 class="big-title reveal" style="animation:fadeUp 1s ease forwards .55s;opacity:0;">Hello,<br><span>my love</span></h1>
+    <p class="sub-line reveal" style="animation:fadeUp 1s ease forwards .8s;opacity:0;margin-top:10px;">this is just for you</p>
+
+    <div class="frames-row reveal d2">
+      <div class="frame sm tll" data-pid="1"><div class="inner empty"><span class="ph-icon">🌸</span><span class="ph-text">tap to add photo</span></div><span class="caption">us ♡</span></div>
+      <div class="frame md t0" style="z-index:2;margin:0 -8px;" data-pid="2"><div class="inner empty"><span class="ph-icon">💕</span><span class="ph-text">tap to add photo</span></div><span class="caption">my fav</span></div>
+      <div class="frame sm trr" data-pid="3"><div class="inner empty"><span class="ph-icon">✨</span><span class="ph-text">tap to add photo</span></div><span class="caption">always</span></div>
+    </div>
+
+    <div class="bubble-row">
+      <span class="bubble" style="transition-delay:.15s">my favourite person</span>
+      <span class="bubble" style="transition-delay:.3s">my sunshine</span>
+      <span class="bubble" style="transition-delay:.45s">my whole heart</span>
+    </div>
+    <div class="scroll-cue"><span>scroll</span><div class="scroll-line"></div></div>
+  </div>
+
+  <div class="wave-conn"><svg viewBox="0 0 375 50" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,0 C93,45 187,0 280,35 C328,50 360,15 375,0 Z" fill="rgba(232,53,109,.04)"/></svg></div>
+
+  <!-- ────────────────────────────────
+       S2 · You are enough
+  ──────────────────────────────────── -->
+  <div class="section" id="s2">
+    <p class="label reveal">a reminder from me</p>
+    <h2 class="heading2 reveal d1"><em>You are</em><br>more than enough</h2>
+    <div class="msg-card reveal d2">
+      <p>On days when you feel like you're not doing enough — you are. On days when everything feels heavy — I see you trying, and <em>that alone is beautiful.</em></p>
+    </div>
+    <div class="frames-row reveal d3">
+      <div class="frame wide t0" data-pid="4"><div class="inner empty"><span class="ph-icon">💗</span><span class="ph-text">tap to add photo</span></div><span class="caption">my everything ✦</span></div>
+    </div>
+    <div class="bubble-row">
+      <span class="bubble" style="transition-delay:.1s">enough</span>
+      <span class="bubble" style="transition-delay:.2s">worthy</span>
+      <span class="bubble" style="transition-delay:.3s">powerful</span>
+      <span class="bubble" style="transition-delay:.4s">loved</span>
+    </div>
+  </div>
+
+  <div class="wave-conn"><svg viewBox="0 0 375 50" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,50 C100,8 250,48 375,50 Z" fill="rgba(248,130,180,.04)"/></svg></div>
+
+  <!-- ────────────────────────────────
+       S3 · HEART PHOTO MOSAIC
+  ──────────────────────────────────── -->
+  <div class="section" id="s3">
+    <p class="label reveal">made with love</p>
+    <h2 class="heading2 reveal d1">every photo<br>of you is <em>my heart</em></h2>
+
+    <div id="heart-mosaic" class="reveal d2">
+      <!-- row 0 -->
+      <div class="hcell spacer"></div>
+      <div class="hcell" data-pid="h1"><div class="inner empty">🌸</div></div>
+      <div class="hcell spacer"></div>
+      <div class="hcell" data-pid="h2"><div class="inner empty">💕</div></div>
+      <div class="hcell spacer"></div>
+      <!-- row 1 -->
+      <div class="hcell" data-pid="h3"><div class="inner empty">💗</div></div>
+      <div class="hcell" data-pid="h4"><div class="inner empty">🌷</div></div>
+      <div class="hcell" data-pid="h5"><div class="inner empty">✨</div></div>
+      <div class="hcell" data-pid="h6"><div class="inner empty">💕</div></div>
+      <div class="hcell" data-pid="h7"><div class="inner empty">🌸</div></div>
+      <!-- row 2 -->
+      <div class="hcell" data-pid="h8"><div class="inner empty">🌷</div></div>
+      <div class="hcell" data-pid="h9"><div class="inner empty">💗</div></div>
+      <div class="hcell" data-pid="h10"><div class="inner empty">💖</div></div>
+      <div class="hcell" data-pid="h11"><div class="inner empty">✨</div></div>
+      <div class="hcell" data-pid="h12"><div class="inner empty">💕</div></div>
+      <!-- row 3 -->
+      <div class="hcell spacer"></div>
+      <div class="hcell" data-pid="h13"><div class="inner empty">🌸</div></div>
+      <div class="hcell" data-pid="h14"><div class="inner empty">💗</div></div>
+      <div class="hcell" data-pid="h15"><div class="inner empty">🌷</div></div>
+      <div class="hcell spacer"></div>
+      <!-- row 4 -->
+      <div class="hcell spacer"></div>
+      <div class="hcell spacer"></div>
+      <div class="hcell" data-pid="h16"><div class="inner empty">💕</div></div>
+      <div class="hcell spacer"></div>
+      <div class="hcell spacer"></div>
+    </div>
+
+    <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.72rem;color:var(--muted);margin-top:4px;text-align:center;" class="reveal d3"></p>
+
+    <div class="divider reveal d3"></div>
+
+    <div class="mosaic-text reveal d3">
+      I made this for you because I wanted you to have something to come back to — a little corner that's entirely yours, entirely ours. Every tile here is a place for a memory we've made, or one we're still waiting to make together. I didn't know how to say everything I feel in words, so I thought maybe I could say it in photographs instead.
+    </div>
+
+    <div class="divider reveal d4"></div>
+
+    <div class="mosaic-text reveal d4">
+      <em>I don't think you'll ever fully understand how beautiful you are to me.</em> Not just in the way you look — though you are so, so beautiful — but in the way you move through the world. The way you laugh at your own jokes before you even finish telling them. The way your eyes go soft when you talk about things you love. The way you make everyone around you feel a little more seen.
+    </div>
+
+    <div class="divider reveal d4"></div>
+  </div>
+
+  <div class="wave-conn"><svg viewBox="0 0 375 50" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,0 C75,50 200,8 375,0 Z" fill="rgba(232,53,109,.04)"/></svg></div>
+
+  <!-- ────────────────────────────────
+       S4 · Keep going
+  ──────────────────────────────────── -->
+  <div class="section" id="s4">
+    <p class="label reveal">when things get hard</p>
+    <div class="quote reveal d1">"keep going,<br><span>soft one</span><br>you've got this"</div>
+    <div class="frames-row reveal d2">
+      <div class="frame md tl" style="margin-right:8px;" data-pid="5"><div class="inner empty"><span class="ph-icon">🌷</span><span class="ph-text">tap to add photo</span></div><span class="caption">brave</span></div>
+      <div class="frame md tr" data-pid="6"><div class="inner empty"><span class="ph-icon">🌸</span><span class="ph-text">tap to add photo</span></div><span class="caption">strong</span></div>
+    </div>
+    <div class="msg-card reveal d3">
+      <p>Every pose u make always make me happy cuz u soo cuteee asdasdha. <em></em></p>
+    </div>
+    <div class="bubble-row">
+      <span class="bubble" style="transition-delay:.15s">cute</span>
+      <span class="bubble" style="transition-delay:.3s">preety</span>
+      <span class="bubble" style="transition-delay:.45s">sweet</span>
+    </div>
+  </div>
+
+  <div class="wave-conn"><svg viewBox="0 0 375 50" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,50 C130,4 260,48 375,50 Z" fill="rgba(248,130,180,.04)"/></svg></div>
+
+  <!-- ────────────────────────────────
+       S5 · Things I adore
+  ──────────────────────────────────── -->
+  <div class="section" id="s5">
+    <p class="label reveal">things I adore about you</p>
+    <h2 class="heading2 reveal d1">the little things<br>that make me <em>fall</em></h2>
+    <div class="bubble-row" style="margin-top:0;">
+      <span class="bubble" style="transition-delay:.05s">your laugh</span>
+      <span class="bubble" style="transition-delay:.15s">your kind heart</span>
+      <span class="bubble" style="transition-delay:.25s">your smile</span>
+      <span class="bubble" style="transition-delay:.35s">how you care</span>
+      <span class="bubble" style="transition-delay:.45s">your silly jokes</span>
+      <span class="bubble" style="transition-delay:.55s">your eyes</span>
+      <span class="bubble" style="transition-delay:.65s">your voice</span>
+      <span class="bubble" style="transition-delay:.75s">literally everything</span>
+    </div>
+    <div class="frames-row reveal d2" style="margin-top:24px;align-items:flex-end;">
+      <div class="frame sm tll" data-pid="7"><div class="inner empty"><span class="ph-icon">💕</span><span class="ph-text">tap to add</span></div><span class="caption">cute</span></div>
+      <div class="frame lg t0" style="z-index:2;margin:0 -10px;" data-pid="8"><div class="inner empty"><span class="ph-icon">💗</span><span class="ph-text">tap to add photo</span></div><span class="caption">my fav face ✦</span></div>
+      <div class="frame sm trr" data-pid="9"><div class="inner empty"><span class="ph-icon">🌸</span><span class="ph-text">tap to add</span></div><span class="caption">love u</span></div>
+    </div>
+    <div class="msg-card reveal d3" style="margin-top:20px;">
+      <p>Every single thing about you is a reason I choose you, <em>again and again,</em> every single day.</p>
+    </div>
+  </div>
+
+  <div class="wave-conn"><svg viewBox="0 0 375 50" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,0 C90,48 200,10 375,0 Z" fill="rgba(244,160,191,.05)"/></svg></div>
+
+  <!-- ────────────────────────────────
+       S6 · Hard days
+  ──────────────────────────────────── -->
+  <div class="section" id="s6">
+    <p class="label reveal">for your hardest days</p>
+    <div class="quote reveal d1">"rest if you need,<br>but please don't<br><span>give up</span>"</div>
+    <div class="frames-row reveal d2">
+      <div class="frame wide tr" data-pid="10"><div class="inner empty"><span class="ph-icon">🌙</span><span class="ph-text">tap to add photo</span></div><span class="caption">rest, bloom, repeat</span></div>
+    </div>
+    <div class="msg-card reveal d3">
+      <p>You're allowed to have bad days. You're allowed to feel tired. But never forget — <em>you are so deeply loved,</em> and tomorrow is a new chance to bloom.</p>
+    </div>
+    <div class="bubble-row">
+      <span class="bubble" style="transition-delay:.1s">rest is okay</span>
+      <span class="bubble" style="transition-delay:.25s">tomorrow is new</span>
+      <span class="bubble" style="transition-delay:.4s">I'm here for you</span>
+    </div>
+  </div>
+
+  <div class="wave-conn"><svg viewBox="0 0 375 50" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,50 C110,4 270,48 375,50 Z" fill="rgba(232,53,109,.04)"/></svg></div>
+
+  <!-- ────────────────────────────────
+       S7 · With all my love (final)
+  ──────────────────────────────────── -->
+  <div class="section" id="s7" style="padding-bottom:110px;">
+    <p class="label reveal">always and forever</p>
+    <span class="heart-deco reveal d1" style="font-size:4rem;">💗</span>
+    <h2 class="heading2 reveal d2">with all<br>my <em>love</em>,<br>always.</h2>
+    <div class="frames-row reveal d2">
+      <div class="frame md tl" style="margin-right:8px;" data-pid="11"><div class="inner empty"><span class="ph-icon">💕</span><span class="ph-text">tap to add photo</span></div><span class="caption">forever</span></div>
+      <div class="frame md tr" data-pid="12"><div class="inner empty"><span class="ph-icon">🌸</span><span class="ph-text">tap to add photo</span></div><span class="caption">my heart ✦</span></div>
+    </div>
+    <div class="msg-card reveal d3">
+      <p>You deserve every beautiful thing this world has to offer. Thank you for existing, for being you, for letting me love you. <em>You are my favourite.</em></p>
+    </div>
+    <p class="final-note reveal d4">loving you is the easiest and best thing I've ever done.</p>
+    <p class="final-sig reveal d4">with love, always ♡</p>
+  </div>
+
+</div><!-- /main -->
+
+<script>
+/* ── CANVAS PARTICLES ── */
+const cv=document.getElementById('fx'),cx=cv.getContext('2d');
+let W,H,parts=[];
+function resize(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;}
+resize();window.addEventListener('resize',resize);
+const COLORS=['#e8356d','#f97db5','#ffadd0','#ffd6e7','#ffffff','#ffa0c8','#ff69a0','#c4185a','#ffebf3'];
+class P{
+  constructor(x,y,big){
+    this.x=x;this.y=y;
+    const a=Math.random()*Math.PI*2,spd=big?3+Math.random()*10:1.5+Math.random()*6;
+    this.vx=Math.cos(a)*spd;this.vy=Math.sin(a)*spd-(big?2:0);
+    this.r=big?2+Math.random()*5:1.5+Math.random()*3;
+    this.col=COLORS[Math.floor(Math.random()*COLORS.length)];
+    this.life=big?90+Math.random()*40:55+Math.random()*25;
+    this.max=this.life;this.g=.08+Math.random()*.1;
+    this.shape=Math.random()<.3?(Math.random()<.5?'star':'heart'):'circle';
+    this.rot=Math.random()*Math.PI*2;this.drot=(Math.random()-.5)*.15;
+  }
+  update(){this.x+=this.vx;this.y+=this.vy;this.vy+=this.g;this.vx*=.98;this.life--;this.rot+=this.drot;}
+  draw(){
+    const a=this.life/this.max;
+    cx.save();cx.globalAlpha=a;cx.fillStyle=this.col;cx.shadowBlur=5;cx.shadowColor=this.col;
+    cx.translate(this.x,this.y);cx.rotate(this.rot);
+    if(this.shape==='circle'){cx.beginPath();cx.arc(0,0,Math.max(this.r*a+.3,0),0,Math.PI*2);cx.fill();}
+    else if(this.shape==='star'){drawStar(cx,0,0,5,this.r+1,this.r*.45);}
+    else{drawHeart(cx,0,0,this.r+1);}
+    cx.restore();
+  }
+}
+function drawStar(c,x,y,n,r1,r2){c.beginPath();for(let i=0;i<n*2;i++){const r=i%2===0?r1:r2,a=(i*Math.PI)/n-Math.PI/2;i===0?c.moveTo(x+r*Math.cos(a),y+r*Math.sin(a)):c.lineTo(x+r*Math.cos(a),y+r*Math.sin(a));}c.closePath();c.fill();}
+function drawHeart(c,x,y,s){c.beginPath();c.moveTo(x,y+s*.25);c.bezierCurveTo(x,y-s*.25,x-s,y-s*.25,x-s,y+s*.1);c.bezierCurveTo(x-s,y+s*.6,x,y+s*.9,x,y+s*.9);c.bezierCurveTo(x,y+s*.9,x+s,y+s*.6,x+s,y+s*.1);c.bezierCurveTo(x+s,y-s*.25,x,y-s*.25,x,y+s*.25);c.closePath();c.fill();}
+function burst(x,y,big,n){for(let i=0;i<(n||(big?80:30));i++)parts.push(new P(x,y,big));}
+(function loop(){cx.clearRect(0,0,W,H);parts=parts.filter(p=>p.life>0);parts.forEach(p=>{p.update();p.draw();});requestAnimationFrame(loop);})();
+
+/* ── FLOATING PETALS — fewer, softer ── */
+const EMOJIS=['🌸','🌷','✦','♡'];
+for(let i=0;i<18;i++){
+  const el=document.createElement('div');el.className='fp';
+  el.textContent=EMOJIS[Math.floor(Math.random()*EMOJIS.length)];
+  el.style.cssText=`left:${Math.random()*100}%;font-size:${.5+Math.random()*.8}rem;animation-duration:${12+Math.random()*16}s;animation-delay:${-Math.random()*28}s;opacity:${.06+Math.random()*.15}`;
+  document.body.appendChild(el);
+}
+
+/* ── BACKGROUND SPARKLE STARS ── */
+const SPARKS=['✦','✧','⋆','˚','·'];
+for(let i=0;i<22;i++){
+  const el=document.createElement('div');el.className='sparkle';
+  el.textContent=SPARKS[Math.floor(Math.random()*SPARKS.length)];
+  const delay=Math.random()*6;
+  const dur=2.5+Math.random()*4;
+  el.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;font-size:${.4+Math.random()*.7}rem;animation-duration:${dur}s;animation-delay:${-delay}s;color:rgba(232,53,109,${.3+Math.random()*.35});`;
+  document.body.appendChild(el);
+}
+
+/* ── FLOATING HEARTS per section — subtle ── */
+document.querySelectorAll('.section').forEach(sec=>{
+  for(let i=0;i<3;i++){
+    const h=document.createElement('div');h.className='fheart';
+    h.textContent=['💗','♡','✦'][Math.floor(Math.random()*3)];
+    h.style.cssText=`left:${5+Math.random()*88}%;bottom:${10+Math.random()*60}%;font-size:${.6+Math.random()*.6}rem;animation-duration:${8+Math.random()*10}s;animation-delay:${-Math.random()*10}s;`;
+    sec.appendChild(h);
+  }
+});
+
+/* ── TAP BOX ── */
+let taps=0;
+const HINTS=['once more','almost!','here we go ♡'];
+function tapBox(e){
+  if(taps>=3)return;taps++;
+  document.getElementById('td'+taps).classList.add('lit');
+  document.getElementById('tapHint').textContent=HINTS[taps-1];
+  const box=document.getElementById('tapbox');
+  box.classList.remove('shake');void box.offsetWidth;box.classList.add('shake');
+  burst(e.clientX,e.clientY,false,30);spawnRipple(e.clientX,e.clientY);spawnFloat(e.clientX,e.clientY);
+  if(taps===3)setTimeout(()=>explodeBox(e.clientX,e.clientY),120);
+}
+function explodeBox(x,y){
+  document.getElementById('tapbox').classList.add('boom');
+  burst(W/2,H/2,true,80);
+  [0,120,240].forEach((a,i)=>setTimeout(()=>{const rad=a*Math.PI/180;burst(W/2+Math.cos(rad)*90,H/2+Math.sin(rad)*90,true,40);},i*80));
+  setTimeout(()=>{
+    document.getElementById('gate').classList.add('exploded');
+    setTimeout(()=>{
+      document.getElementById('gate').style.display='none';
+      const m=document.getElementById('main');m.classList.add('show');
+      document.body.style.overflow='auto';
+      setTimeout(()=>burst(W/2,H*.3,true,60),200);
+    },800);
+  },350);
+}
+function spawnRipple(x,y){
+  const r=document.createElement('div');
+  r.style.cssText=`position:fixed;left:${x-30}px;top:${y-30}px;width:60px;height:60px;border-radius:50%;border:1.5px solid rgba(232,53,109,.5);pointer-events:none;z-index:9000;animation:ripA .6s ease-out forwards;`;
+  document.body.appendChild(r);setTimeout(()=>r.remove(),650);
+}
+function spawnFloat(x,y){
+  const icons=['🌸','💕','✨','💗','🌷'];
+  const el=document.createElement('div');
+  el.textContent=icons[Math.floor(Math.random()*icons.length)];
+  el.style.cssText=`position:fixed;left:${x-12}px;top:${y-12}px;font-size:1.4rem;pointer-events:none;z-index:9001;animation:floatUp 1s ease-out forwards;`;
+  document.body.appendChild(el);setTimeout(()=>el.remove(),1050);
+}
+const ks=document.createElement('style');
+ks.textContent=`
+  @keyframes ripA{0%{transform:scale(0);opacity:.7}100%{transform:scale(4);opacity:0}}
+  @keyframes floatUp{0%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(-120px) scale(.5);opacity:0}}
+`;
+document.head.appendChild(ks);
+
+/* ── SCROLL REVEAL ── */
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('on');
+      e.target.closest('.section')?.querySelectorAll('.bubble').forEach(b=>b.classList.add('on'));
+    }
+  });
+},{threshold:.08});
+document.querySelectorAll('.reveal,.bubble').forEach(el=>io.observe(el));
+
+/* ═══════════════════════════════════════════════════
+   📸 PHOTOS — edit the URLs/paths below to add your images.
+   Use a direct image URL (https://...) or a relative path (photos/img.jpg).
+   Leave a slot as "" to keep it as the placeholder emoji.
+   ═══════════════════════════════════════════════════ */
+const PHOTOS = {
+  /* ── Polaroid frames (sections 1, 2, 4, 5, 6, 7) ── */
+  "1":  "gambar1.jpeg",   // S1 · us ♡  (small, left)
+  "2":  "gambar2.jpeg",   // S1 · my fav  (medium, centre)
+  "3":  "gambar3.jpeg",   // S1 · always  (small, right)
+  "4":  "gambar4.jpeg",   // S2 · my everything  (wide)
+  "5":  "gambar15.jpeg",   // S4 · brave  (medium, left)
+  "6":  "gambar16.jpeg",   // S4 · strong  (medium, right)
+  "7":  "gambar2.jpeg",   // S5 · cute  (small, left)
+  "8":  "gambar3.jpeg",   // S5 · my fav face  (large, centre)
+  "9":  "gambar1.jpeg",   // S5 · love u  (small, right)
+  "10": "gambar5.jpeg",   // S6 · rest, bloom, repeat  (wide)
+  "11": "gambar10.jpeg",   // S7 · forever  (medium, left)
+  "12": "gambar7.jpeg",   // S7 · my heart  (medium, right)
+
+  /* ── Heart mosaic tiles (section 3) ── */
+  "h1":  "gambar5.jpeg",
+  "h2":  "gambar6.jpeg",
+  "h3":  "gambar7.jpeg",
+  "h4":  "gambar8.jpeg",
+  "h5":  "gambar9.jpeg",
+  "h6":  "gambar10.jpeg",
+  "h7":  "gambar9.jpeg",
+  "h8":  "gambar12.jpeg",
+  "h9":  "gambar13.jpeg",
+  "h10": "gambar5.jpeg",
+  "h11": "gambar7.jpeg",
+  "h12": "gambar11.jpeg",
+  "h13": "gambar5.jpeg",
+  "h14": "gambar14.jpeg",
+  "h15": "gambar8.jpeg",
+  "h16": "gambar7.jpeg",
+};
+
+/* ── Inject photos into all slots on load ── */
+function setPhoto(inner, src) {
+  inner.innerHTML = `<img src="${src}" style="width:100%;height:100%;object-fit:cover;display:block;">`;
+  inner.classList.remove('empty');
+}
+document.querySelectorAll('[data-pid]').forEach(el => {
+  const pid = el.getAttribute('data-pid');
+  const src = PHOTOS[pid];
+  const inner = el.querySelector('.inner');
+  if (src && inner) setPhoto(inner, src);
+});
+
+document.body.style.overflow='hidden';
+</script>
+</body>
+</html>
